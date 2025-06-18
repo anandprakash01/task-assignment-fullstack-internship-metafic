@@ -1,0 +1,29 @@
+{
+    "name": "task-assignment-fullstack-internship-metafic",
+    "version": "1.0.0",
+    "description": "",
+    "homepage": "https://github.com/anandprakash01/task-assignment-fullstack-internship-metafic#readme",
+    "bugs": {
+        "url": "https://github.com/anandprakash01/task-assignment-fullstack-internship-metafic/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/anandprakash01/task-assignment-fullstack-internship-metafic.git"
+    },
+    "license": "ISC",
+    "author": "Anand Prakash",
+    "type": "commonjs",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server/index.js",
+        "dev": "nodemon server/index.js",
+        "build": "npm run build:client && npm run build:server",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "dotenv": "^16.5.0",
+        "express": "^5.1.0",
+        "mongoose": "^8.16.0",
+        "nodemon": "^3.1.10"
+    }
+}
