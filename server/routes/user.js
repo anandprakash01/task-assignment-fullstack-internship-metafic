@@ -4,9 +4,11 @@ const router = new express.Router();
 // Importing user controller
 const userController = require("../controllers/user");
 
-router.post("/login", userController.loginUser);
+// Get user
+router.get("/:userName", userController.getUser);
 router.post("/register", userController.registerUser);
-router.get("/:userId", userController.getUserById);
+// Update daily goal
+router.put("/goal/:userId", userController.updateDailyGoal);
 
 // Export the router
 module.exports = router;

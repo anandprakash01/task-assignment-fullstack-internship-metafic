@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import WaterProgress from "./WaterProgress";
 import TodayIntakes from "./TodayIntakes";
+import QuickAdd from "./QuickAdd";
 import {PlusIcon} from "@heroicons/react/24/outline";
 
 const Dashboard = ({user}) => {
@@ -13,6 +14,11 @@ const Dashboard = ({user}) => {
         if (user) {
             console.log(user);
         }
+        const waterIntake = localStorage.getItem("waterIntake");
+        // console.log(waterIntake);
+        if (waterIntake) {
+            setTodayIntake(JSON.parse(waterIntake));
+        }
     }, [user]);
 
     const addWaterIntake = async amount => {
@@ -20,7 +26,7 @@ const Dashboard = ({user}) => {
 
         setLoading(true);
         // try {
-        //   await axios.post(`${API_BASE}/water/add`, {
+        //   await axios.post(`water/add`, {
         //     userId: user._id,
         //     amount: parseInt(amount)
         //   });
@@ -32,17 +38,23 @@ const Dashboard = ({user}) => {
         // } finally {
         //   setLoading(false);
         // }
-        setTodayIntake(prev => ({
-            totalAmount: prev.totalAmount + parseInt(amount),
+
+        const newIntakeState = {
+            totalAmount: todayIntake.totalAmount + parseInt(amount),
             intakes: [
-                ...prev.intakes,
+                ...todayIntake.intakes,
                 {
                     _id: Date.now().toString(),
                     amount: parseInt(amount),
                     timestamp: new Date().toISOString(),
                 },
             ],
-        }));
+        };
+        setTodayIntake(newIntakeState);
+
+        localStorage.setItem("waterIntake", JSON.stringify(newIntakeState));
+        setCustomAmount("");
+        setLoading(false);
     };
 
     // const progressPercentage = user
@@ -76,22 +88,25 @@ const Dashboard = ({user}) => {
                 {/* <QuickAdd onAdd={addWaterIntake} loading={loading} /> */}
 
                 {/* Custom Amount */}
-                <div className="mt-6 flex items-center gap-6">
-                    <input
-                        type="number"
-                        placeholder="Custom amount (ml)"
-                        value={customAmount}
-                        onChange={e => setCustomAmount(e.target.value)}
-                        className="flex px-4 py-2 border border-gray-200 rounded-lg focus-within:border-green-700 focus-within:outline-none"
-                    />
-                    <button
-                        onClick={() => addWaterIntake(customAmount)}
-                        // disabled={loading || !customAmount}
-                        className="p-2 bg-gray-500 text-white rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer hover:bg-gray-600"
-                    >
-                        <PlusIcon className="w-5 h-5 hover:scale-110" />
-                        <span>Add</span>
-                    </button>
+                <div>
+                    <div className="mt-6 flex items-center gap-6">
+                        <input
+                            type="number"
+                            placeholder="Custom amount (ml)"
+                            value={customAmount}
+                            onChange={e => setCustomAmount(e.target.value)}
+                            className="flex px-4 py-2 border border-gray-200 rounded-lg focus-within:border-green-700 focus-within:outline-none"
+                        />
+                        <button
+                            onClick={() => addWaterIntake(customAmount)}
+                            disabled={loading || !customAmount}
+                            className="p-2 bg-gray-500 text-white rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer hover:bg-gray-600"
+                        >
+                            <PlusIcon className="w-5 h-5 hover:scale-110" />
+                            <span>Add</span>
+                        </button>
+                    </div>
+                    <QuickAdd onAdd={addWaterIntake} loading={loading} />
                 </div>
             </div>
             <TodayIntakes

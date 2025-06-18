@@ -1,7 +1,10 @@
 const express = require("express");
+const connectDB = require("./config/db");
 
 // Importing user routes
 const userRoutes = require("./routes/user");
+const waterIntakeRoutes = require("./routes/waterIntake");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
